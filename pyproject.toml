@@ -23,11 +23,17 @@ dev = [
     "black>=24.10.0",
     "pytest-cov>=6.0.0",
     "ruff>=0.9.2",
+    "bandit>=1.8.2",
+    "mypy>=1.14.1",
+    "isort>=5.13.2",
 ]
 
 [tool.black]
 line-length = 88
 target-version = ['py313']
+
+[tool.isort]
+profile = "black"
 
 [tool.pdm]
 distribution = true
@@ -35,6 +41,11 @@ distribution = true
 [tool.pdm.scripts]
 fmt = "black src/"
 fmt-check = "black --check src/"
-lint = "ruff check src/"
+lint = "ruff check --fix src/"
+lint-check = "ruff check src/"
+security-check = "bandit -r src/"
+type-check = "mypy src/"
+sort-imports = "isort src/"
+sort-imports-check = "isort src/ --check"
 test = "pytest tests/"
 cov = "pytest --cov=src --cov-report html tests/ "

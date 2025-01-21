@@ -5,16 +5,16 @@ from loguru import logger
 from pyspark.sql import SparkSession
 
 from dbx_marker.exceptions import (
+    MarkerDeleteError,
     MarkerExistsError,
     MarkerNotFoundError,
     MarkerUpdateError,
-    MarkerDeleteError,
 )
 from dbx_marker.sqls import (
-    INITIALIZE_TABLE_SQL,
-    GET_MARKER_SQL,
-    UPDATE_MARKER_SQL,
     DELETE_MARKER_SQL,
+    GET_MARKER_SQL,
+    INITIALIZE_TABLE_SQL,
+    UPDATE_MARKER_SQL,
 )
 from dbx_marker.utils import delta_table_exists
 

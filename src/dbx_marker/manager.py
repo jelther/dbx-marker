@@ -61,11 +61,13 @@ class DbxMarkerManager:
         )
         try:
             df = self.spark.sql(sql_statement)
-            if df.count() == 0:
+            row = df.first()
+            if row is None:
                 logger.debug(f"No marker found for pipeline {pipeline_name}.")
                 raise MarkerNotFoundError(
                     f"No marker found for pipeline '{pipeline_name}'."
                 )
+            return row["value"]
         except MarkerNotFoundError as mnfe:
             logger.error(mnfe)
             raise mnfe
@@ -74,8 +76,6 @@ class DbxMarkerManager:
             raise MarkerNotFoundError(
                 f"An error occurred while retrieving marker for pipeline '{pipeline_name}': {e}"
             ) from e
-
-        return df.first()["value"]
 
     def update_marker(self, pipeline_name: str, value: str) -> None:
         """

@@ -1,0 +1,5 @@
+next-version: 0.1.0
+branches:
+  main:
+    regex: main
+    mode: ContinuousDeployment

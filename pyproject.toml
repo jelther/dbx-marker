@@ -47,5 +47,7 @@ security-check = "bandit -r src/"
 type-check = "mypy src/"
 sort-imports = "isort src/"
 sort-imports-check = "isort src/ --check"
+all-checks = {composite = ["fmt-check", "lint-check", "security-check", "type-check", "sort-imports-check"]}
+all-fix = {composite = ["fmt", "lint", "sort-imports"]}
 test = "pytest tests/"
 cov = "pytest --cov=src --cov-report html tests/ "

@@ -63,7 +63,7 @@ class DbxMarker:
             df = self.spark.sql(sql_statement)
             row = df.first()
             if row is None:
-                logger.debug(f"No marker found for pipeline {pipeline_name}.")
+                logger.debug(f"No marker found for pipeline '{pipeline_name}'.")
                 raise MarkerNotFoundError(
                     f"No marker found for pipeline '{pipeline_name}'."
                 )
@@ -84,15 +84,6 @@ class DbxMarker:
         :param pipeline_name: Unique identifier for the pipeline.
         :param value: New marker or checkpoint value.
         """
-        try:
-            existing_marker = self.get_marker(pipeline_name)
-            if existing_marker:
-                raise MarkerExistsError(
-                    f"Marker for pipeline '{pipeline_name}' already exists: {existing_marker}. Cannot insert a duplicate."
-                )
-        except MarkerNotFoundError:
-            pass
-
         now: datetime = datetime.now()
         sql_statement: str = UPDATE_MARKER_SQL.format(
             delta_table_path=self.delta_table_path,

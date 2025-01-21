@@ -44,14 +44,15 @@ jobs:
     - name: Update version in pyproject.toml
       if: github.ref == 'refs/heads/main'
       run: |
+        echo "Updating version to ${{ steps.gitversion.outputs.semVer }}"
         sed -i "s/version = \".*\"/version = \"${{ steps.gitversion.outputs.semVer }}\"/" pyproject.toml
 
     - name: Build package
       if: github.ref == 'refs/heads/main'
       run: pdm build
 
-    - name: Publish package to PyPI
-      if: github.ref == 'refs/heads/main'
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
+#    - name: Publish package to PyPI
+#      if: github.ref == 'refs/heads/main'
+#      uses: pypa/gh-action-pypi-publish@release/v1
+#      with:
+#        password: ${{ secrets.PYPI_API_TOKEN }}

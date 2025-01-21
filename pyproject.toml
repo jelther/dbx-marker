@@ -25,3 +25,9 @@ dev = [
     "flake8>=7.1.1",
     "black>=24.10.0",
 ]
+
+[tool.pdm.scripts]
+fmt = "black src/"
+lint = "flake8 src/"
+test = "pytest tests/"
+cov = "pytest --cov=src tests/"

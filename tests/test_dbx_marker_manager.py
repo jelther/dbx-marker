@@ -1,7 +1,7 @@
 import pytest
-from dbx_marker.manager import DbxMarker
-from dbx_marker.exceptions import MarkerNotFoundError, MarkerExistsError
 
+from dbx_marker.exceptions import MarkerNotFoundError
+from dbx_marker.manager import DbxMarker
 
 
 def test_initialize_table(mock_spark):

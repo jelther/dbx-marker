@@ -6,7 +6,6 @@ from pyspark.sql import SparkSession
 
 from dbx_marker.exceptions import (
     MarkerDeleteError,
-    MarkerExistsError,
     MarkerNotFoundError,
     MarkerUpdateError,
 )

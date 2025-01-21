@@ -1,7 +1,3 @@
-class MarkerExistsError(Exception):
-    pass
-
-
 class MarkerNotFoundError(Exception):
     pass
 

@@ -1,5 +1,5 @@
 """
-dbx-marker - Easily manage incremental progress in your Databricks data pipelines.
+dbx-marker - Easily manage incremental progress using watermarks in your Databricks data pipelines.
 """
 
 from dbx_marker.exceptions import (

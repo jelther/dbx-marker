@@ -1,7 +1,7 @@
 [project]
 name = "dbx-marker"
 version = "0.1.0"
-description = "Easily manage incremental progress, watermarks, and checkpoints in your Databricks data pipelines"
+description = "Easily manage incremental progress using watermarks in your Databricks data pipelines"
 authors = [
     {name = "Jelther Goncalves", email = "hello@jelther.dev"},
 ]

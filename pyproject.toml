@@ -1,0 +1,19 @@
+[project]
+name = "dbx-marker"
+version = "0.1.0"
+description = "Easily manage incremental progress, watermarks, and checkpoints in your Databricks data pipelines"
+authors = [
+    {name = "Jelther Goncalves", email = "hello@jelther.dev"},
+]
+dependencies = []
+requires-python = ">=3.13"
+readme = "README.md"
+license = {text = "MIT License"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

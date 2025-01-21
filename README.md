@@ -4,13 +4,13 @@ Easily manage incremental progress using watermarks in your Databricks data pipe
 
 ## Overview
 
-dbx-marker is a Python library that helps you manage checkpoints and progress markers in your Databricks data pipelines using Delta tables.
+dbx-marker is a Python library that helps you manage watermarks in your Databricks data pipelines using Delta tables.
 
 It provides a simple interface to track and manage pipeline progress, making it easier to implement incremental processing and resume operations.
 
 ## Features
 
-- Simple API for managing pipeline markers/checkpoints
+- Simple API for managing pipeline watermarks
 - Persistent storage using Delta tables
 - Thread-safe operations
 - Comprehensive error handling
@@ -39,7 +39,7 @@ manager = DbxMarker(
     spark=spark
 )
 
-# Update a marker (will upsert if doesn't exist)
+# Update a marker (will upsert if it doesn't exist)
 manager.update_marker("my_pipeline", "2024-01-21")
 
 # Get the current marker

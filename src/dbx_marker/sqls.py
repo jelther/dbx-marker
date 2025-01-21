@@ -33,5 +33,5 @@ WHEN NOT MATCHED THEN
 
 DELETE_MARKER_SQL = """
 DELETE FROM delta.`{delta_table_path}`
-WHERE pipeline_name = '{pipeline_name}' AND checkpoint_type = '{checkpoint_type}'
+WHERE pipeline_name = '{pipeline_name}'
 """

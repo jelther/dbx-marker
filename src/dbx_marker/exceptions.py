@@ -12,4 +12,3 @@ class MarkerUpdateError(Exception):
 
 class MarkerDeleteError(Exception):
     pass
-

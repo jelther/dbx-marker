@@ -16,20 +16,25 @@ build-backend = "pdm.backend"
 
 
 
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-mock>=3.14.0",
+    "black>=24.10.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.9.2",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py313']
+
 [tool.pdm]
 distribution = true
 
 [tool.pdm.scripts]
 fmt = "black src/"
-lint = "flake8 src/"
+fmt-check = "black --check src/"
+lint = "ruff check src/"
 test = "pytest tests/"
 cov = "pytest --cov=src --cov-report html tests/ "
-[dependency-groups]
-dev = [
-    "pytest>=8.3.4",
-    "pytest-mock>=3.14.0",
-    "flake8>=7.1.1",
-    "black>=24.10.0",
-    "pytest-cov>=6.0.0",
-]
-

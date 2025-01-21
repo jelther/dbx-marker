@@ -19,7 +19,7 @@ from dbx_marker.sqls import (
 from dbx_marker.utils import delta_table_exists
 
 
-class DbxMarkerManager:
+class DbxMarker:
     def __init__(self, delta_table_path: str, spark: Optional[SparkSession] = None):
         """
         Initialize the manager with the path to the Delta table that stores markers or checkpoints.

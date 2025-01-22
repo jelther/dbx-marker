@@ -1,7 +1,10 @@
 import logging
 from unittest.mock import patch
 
+import pytest
+
 from dbx_marker import DbxMarker
+from dbx_marker.exceptions import MarkerInitializationError
 from dbx_marker.sqls import INITIALIZE_TABLE_SQL
 
 
@@ -36,3 +39,12 @@ def test_initialize_table_that_exists(mock_table_exists, mock_spark, caplog):
     assert caplog.records[0].levelno == logging.DEBUG
     assert caplog.records[1].message == "Delta table already exists."
     assert caplog.records[1].levelno == logging.DEBUG
+
+
+@patch("dbx_marker.manager.delta_table_exists", return_value=False)
+def test_initialize_table_raises_exception(mock_table_exists, mock_spark, caplog):
+    manager = DbxMarker(delta_table_path="mock_path", spark=mock_spark)
+    mock_spark.sql.side_effect = Exception("Test exception")
+    with pytest.raises(MarkerInitializationError):
+        manager._initialize_table()
+    assert "Failed to initialize Delta table: Test exception" in caplog.text

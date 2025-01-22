@@ -4,7 +4,7 @@ from typing import Union
 from loguru import logger
 from pyspark.errors import AnalysisException
 
-from dbx_marker.exceptions import MarkerParsingError, MarkerInvalidTypeError
+from dbx_marker.exceptions import MarkerInvalidTypeError, MarkerParsingError
 
 
 def delta_table_exists(spark, path: str) -> bool:
@@ -37,9 +37,6 @@ def parse_marker_from_type(
             parsed_marker = datetime.strptime(marker, datetime_format)
         else:
             raise MarkerInvalidTypeError(f"Invalid marker type: {marker_type}")
-    except MarkerParsingError as mpe:
-        logger.error(mpe)
-        raise mpe
     except MarkerInvalidTypeError as mite:
         logger.error(mite)
         raise mite

@@ -7,9 +7,10 @@ from pyspark.sql import SparkSession
 from dbx_marker.config import config
 from dbx_marker.exceptions import (
     MarkerDeleteError,
+    MarkerInitializationError,
+    MarkerInvalidTypeError,
     MarkerNotFoundError,
     MarkerUpdateError,
-    MarkerInvalidTypeError,
 )
 from dbx_marker.sqls import (
     DELETE_MARKER_SQL,
@@ -56,7 +57,9 @@ class DbxMarker:
                 logger.debug("Delta table already exists.")
         except Exception as e:
             logger.error(f"Failed to initialize Delta table: {e}")
-            raise MarkerUpdateError(f"Could not initialize the Delta table: {e}") from e
+            raise MarkerInitializationError(
+                f"Could not initialize the Delta table: {e}"
+            ) from e
 
     def get_marker(self, pipeline_name: str) -> Union[int, float, datetime]:
         """
@@ -105,11 +108,18 @@ class DbxMarker:
                 f"Invalid marker type: {marker_type}. Allowed marker types: {config.ALLOWED_MARKER_TYPES}"
             )
 
-        # Parse values to string (datetime is a special case)
         if marker_type == "datetime":
-            value_parsed: str = value.strftime(self.datetime_format)
+            if not isinstance(value, datetime):
+                raise TypeError(
+                    f"Expected `value` to be a datetime when `marker_type` is `datetime`, got {type(value).__name__}"
+                )
+            value_parsed = value.strftime(self.datetime_format)
         else:
-            value_parsed: str = str(value)
+            if not isinstance(value, (int, float)):
+                raise TypeError(
+                    f"Expected `value` to be int or float when `marker_type` is `{marker_type}`, got {type(value).__name__}"
+                )
+            value_parsed = str(value)
 
         sql_statement: str = UPDATE_MARKER_SQL.format(
             delta_table_path=self.delta_table_path,

@@ -1,3 +1,7 @@
+class MarkerInitializationError(Exception):
+    pass
+
+
 class MarkerNotFoundError(Exception):
     pass
 

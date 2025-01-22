@@ -1,8 +1,9 @@
+from datetime import datetime
 from unittest.mock import patch
 
 import pytest
-from datetime import datetime
 from freezegun import freeze_time
+
 from dbx_marker import DbxMarker
 from dbx_marker.exceptions import MarkerInvalidTypeError, MarkerUpdateError
 from dbx_marker.sqls import UPDATE_MARKER_SQL
@@ -74,6 +75,26 @@ def test_update_marker_invalid_marker_type(mock_delta_table_exists, mock_spark, 
     manager = DbxMarker(delta_table_path="mock_path", spark=mock_spark)
     with pytest.raises(MarkerInvalidTypeError):
         manager.update_marker("test_pipeline", 1, "invalid_type")
+
+
+@freeze_time("2023-01-01 00:00:00")
+@patch("dbx_marker.manager.delta_table_exists", return_value=True)
+def test_update_marker_invalid_marker_type_datetime(
+    mock_delta_table_exists, mock_spark, caplog
+):
+    manager = DbxMarker(delta_table_path="mock_path", spark=mock_spark)
+    with pytest.raises(TypeError):
+        manager.update_marker("test_pipeline", 1, "datetime")
+
+
+@freeze_time("2023-01-01 00:00:00")
+@patch("dbx_marker.manager.delta_table_exists", return_value=True)
+def test_update_marker_invalid_marker_type_int_or_float(
+    mock_delta_table_exists, mock_spark, caplog
+):
+    manager = DbxMarker(delta_table_path="mock_path", spark=mock_spark)
+    with pytest.raises(TypeError):
+        manager.update_marker("test_pipeline", "random", "int")
 
 
 @freeze_time("2023-01-01 00:00:00")

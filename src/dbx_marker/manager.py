@@ -9,6 +9,7 @@ from dbx_marker.exceptions import (
     MarkerDeleteError,
     MarkerNotFoundError,
     MarkerUpdateError,
+    MarkerInvalidTypeError,
 )
 from dbx_marker.sqls import (
     DELETE_MARKER_SQL,
@@ -86,23 +87,43 @@ class DbxMarker:
                 f"An error occurred while retrieving marker for pipeline '{pipeline_name}': {e}"
             ) from e
 
-    def update_marker(self, pipeline_name: str, value: str) -> None:
+    def update_marker(
+        self, pipeline_name: str, value: Union[int, float, datetime], marker_type: str
+    ) -> None:
         """
         Update or insert the marker for a pipeline.
 
         :param pipeline_name: Unique identifier for the pipeline.
         :param value: New marker value.
+        :param marker_type: Type of the marker value (int, float, datetime).
         """
         now: datetime = datetime.now()
+
+        # Ensure the marker type is valid
+        if marker_type not in config.ALLOWED_MARKER_TYPES:
+            raise MarkerInvalidTypeError(
+                f"Invalid marker type: {marker_type}. Allowed marker types: {config.ALLOWED_MARKER_TYPES}"
+            )
+
+        # Parse values to string (datetime is a special case)
+        if marker_type == "datetime":
+            value_parsed: str = value.strftime(self.datetime_format)
+        else:
+            value_parsed: str = str(value)
+
         sql_statement: str = UPDATE_MARKER_SQL.format(
             delta_table_path=self.delta_table_path,
             pipeline_name=pipeline_name,
-            value=value,
+            value=value_parsed,
+            marker_type=marker_type,
             now=now,
         )
+
         try:
             self.spark.sql(sql_statement)
-            logger.debug(f"Updated marker for pipeline '{pipeline_name}' to '{value}'.")
+            logger.info(
+                f"Updated marker for pipeline '{pipeline_name}' to '{value}' ({marker_type})."
+            )
         except Exception as e:
             logger.error(f"Failed to update marker for pipeline '{pipeline_name}': {e}")
             raise MarkerUpdateError(

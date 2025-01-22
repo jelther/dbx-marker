@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:ec681e99f988c191722a1fc022ea31d3e878581275fa1f35c3bca4540d18a875"
+content_hash = "sha256:6cd23253e36965fe4a207b833559c01d2970a37fa4565db6ec0df4bce2d0cbe5"
 
 [[metadata.targets]]
 requires_python = ">=3.10"
@@ -243,7 +243,7 @@ name = "delta-spark"
 version = "3.3.0"
 requires_python = ">=3.6"
 summary = "Python APIs for using Delta Lake with Apache Spark"
-groups = ["default"]
+groups = ["dev"]
 dependencies = [
     "importlib-metadata>=1.0.0",
     "pyspark<3.6.0,>=3.5.3",
@@ -291,7 +291,7 @@ name = "importlib-metadata"
 version = "8.6.1"
 requires_python = ">=3.9"
 summary = "Read metadata from Python packages"
-groups = ["default"]
+groups = ["dev"]
 dependencies = [
     "typing-extensions>=3.6.4; python_version < \"3.8\"",
     "zipp>=3.20",
@@ -474,7 +474,7 @@ files = [
 name = "py4j"
 version = "0.10.9.7"
 summary = "Enables Python programs to dynamically access arbitrary Java objects"
-groups = ["default", "dev"]
+groups = ["dev"]
 files = [
     {file = "py4j-0.10.9.7-py2.py3-none-any.whl", hash = "sha256:85defdfd2b2376eb3abf5ca6474b51ab7e0de341c75a02f46dc9b5976f5a5c1b"},
     {file = "py4j-0.10.9.7.tar.gz", hash = "sha256:0b6e5315bb3ada5cf62ac651d107bb2ebc02def3dee9d9548e3baac644ea8dbb"},
@@ -511,7 +511,7 @@ name = "pyspark"
 version = "3.5.4"
 requires_python = ">=3.8"
 summary = "Apache Spark Python API"
-groups = ["default", "dev"]
+groups = ["dev"]
 dependencies = [
     "py4j==0.10.9.7",
 ]
@@ -796,7 +796,7 @@ name = "zipp"
 version = "3.21.0"
 requires_python = ">=3.9"
 summary = "Backport of pathlib-compatible object wrapper for zip files"
-groups = ["default"]
+groups = ["dev"]
 files = [
     {file = "zipp-3.21.0-py3-none-any.whl", hash = "sha256:ac1bbe05fd2991f160ebce24ffbac5f6d11d83dc90891255885223d42b3cd931"},
     {file = "zipp-3.21.0.tar.gz", hash = "sha256:2c9958f6430a2040341a52eb608ed6dd93ef4392e02ffe219417c1b28b5dd1f4"},

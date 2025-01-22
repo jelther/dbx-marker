@@ -62,7 +62,6 @@ class DbxMarker:
             df = self.spark.sql(sql_statement)
             row = df.first()
             if row is None:
-                logger.debug(f"No marker found for pipeline '{pipeline_name}'.")
                 raise MarkerNotFoundError(
                     f"No marker found for pipeline '{pipeline_name}'."
                 )

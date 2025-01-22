@@ -6,11 +6,14 @@ on:
       - published
 
 jobs:
-  deploy:
+  release-to-pypi:
     runs-on: ubuntu-latest
-    permissions: # Add necessary permissions
+    permissions:
       contents: read
       id-token: write
+    strategy:
+      matrix:
+        python-version: [ "3.10", "3.11", "3.12", "3.13" ]
 
     steps:
     - name: Checkout code
@@ -33,7 +36,7 @@ jobs:
     - name: Setup PDM
       uses: pdm-project/setup-pdm@v4
       with:
-        python-version: "3.13"
+        python-version: "${{ matrix.python-version }}"
         cache: true
         cache-dependency-path: |
           ./pdm.lock

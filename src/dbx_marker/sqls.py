@@ -9,7 +9,7 @@ USING DELTA
 """
 
 GET_MARKER_SQL = """
-SELECT value
+SELECT value, marker_type
 FROM delta.`{delta_table_path}`
 WHERE pipeline_name = '{pipeline_name}'
 ORDER BY updated_at DESC

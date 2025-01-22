@@ -8,3 +8,11 @@ class MarkerUpdateError(Exception):
 
 class MarkerDeleteError(Exception):
     pass
+
+
+class MarkerParsingError(Exception):
+    pass
+
+
+class MarkerInvalidTypeError(Exception):
+    pass

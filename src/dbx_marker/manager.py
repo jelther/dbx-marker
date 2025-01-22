@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 from loguru import logger
 from pyspark.sql import SparkSession
@@ -15,11 +15,16 @@ from dbx_marker.sqls import (
     INITIALIZE_TABLE_SQL,
     UPDATE_MARKER_SQL,
 )
-from dbx_marker.utils import delta_table_exists
+from dbx_marker.utils import delta_table_exists, parse_marker_from_type
 
 
 class DbxMarker:
-    def __init__(self, delta_table_path: str, spark: Optional[SparkSession] = None):
+    def __init__(
+        self,
+        delta_table_path: str,
+        spark: Optional[SparkSession] = None,
+        datetime_format: str = "%Y-%m-%d %H:%M:%S",
+    ):
         """
         Initialize the manager with the path to the Delta table that stores markers.
 
@@ -27,6 +32,7 @@ class DbxMarker:
         :param spark: Optional SparkSession instance, will create new one if not provided
         """
         self.delta_table_path = delta_table_path
+        self.datetime_format = datetime_format
         self.spark = spark or SparkSession.builder.getOrCreate()
         self._initialize_table()
 
@@ -34,21 +40,23 @@ class DbxMarker:
         """
         Ensure the Delta table for markers exists.
         """
-        logger.debug("Initializing Delta table for markers.")
+        logger.debug("Checking if Delta table for markers exists.")
         try:
 
             if not delta_table_exists(self.spark, self.delta_table_path):
-                logger.debug("Delta table does not exist. Creating it now.")
+                logger.info("Delta table does not exist. Creating it now.")
 
-            self.spark.sql(
-                INITIALIZE_TABLE_SQL.format(delta_table_path=self.delta_table_path)
-            )
-            logger.debug("Delta table initialized successfully.")
+                self.spark.sql(
+                    INITIALIZE_TABLE_SQL.format(delta_table_path=self.delta_table_path)
+                )
+                logger.info("Delta table initialized successfully.")
+            else:
+                logger.debug("Delta table already exists.")
         except Exception as e:
             logger.error(f"Failed to initialize Delta table: {e}")
             raise MarkerUpdateError(f"Could not initialize the Delta table: {e}") from e
 
-    def get_marker(self, pipeline_name: str) -> Optional[str]:
+    def get_marker(self, pipeline_name: str) -> Union[int, float, datetime]:
         """
         Get the current marker value for a given pipeline.
 
@@ -65,7 +73,9 @@ class DbxMarker:
                 raise MarkerNotFoundError(
                     f"No marker found for pipeline '{pipeline_name}'."
                 )
-            return row["value"]
+            return parse_marker_from_type(
+                row["value"], row["marker_type"], self.datetime_format
+            )
         except MarkerNotFoundError as mnfe:
             logger.error(mnfe)
             raise mnfe

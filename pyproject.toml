@@ -42,13 +42,13 @@ profile = "black"
 distribution = true
 
 [tool.pdm.scripts]
-fmt = "black src/"
+fmt = "black src/ tests/"
 fmt-check = "black --check src/"
 lint = "ruff check --fix src/"
 lint-check = "ruff check src/"
 security-check = "bandit -r src/"
 type-check = "mypy src/"
-sort-imports = "isort src/"
+sort-imports = "isort src/ tests/"
 sort-imports-check = "isort src/ --check"
 all-checks = {composite = ["fmt-check", "lint-check", "security-check", "type-check", "sort-imports-check"]}
 all-fix = {composite = ["fmt", "lint", "sort-imports"]}

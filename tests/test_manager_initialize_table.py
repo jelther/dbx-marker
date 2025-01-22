@@ -4,12 +4,15 @@ from unittest.mock import patch
 from dbx_marker import DbxMarker
 from dbx_marker.sqls import INITIALIZE_TABLE_SQL
 
-@patch('dbx_marker.manager.delta_table_exists', return_value=False)
-def test_initialize_table_doesnt_exist(mock_spark, caplog):
+
+@patch("dbx_marker.manager.delta_table_exists", return_value=False)
+def test_initialize_table_doesnt_exist(mock_table_exists, mock_spark, caplog):
     manager = DbxMarker(delta_table_path="mock_path", spark=mock_spark)
     assert manager.delta_table_path == "mock_path"
     assert mock_spark.sql.call_count == 1
-    mock_spark.sql.assert_called_with(INITIALIZE_TABLE_SQL.format(delta_table_path="mock_path"))
+    mock_spark.sql.assert_called_with(
+        INITIALIZE_TABLE_SQL.format(delta_table_path="mock_path")
+    )
 
     # Verify log messages
     assert len(caplog.records) == 3
@@ -21,8 +24,8 @@ def test_initialize_table_doesnt_exist(mock_spark, caplog):
     assert caplog.records[2].levelno == logging.INFO
 
 
-@patch('dbx_marker.manager.delta_table_exists', return_value=True)
-def test_initialize_table_that_exists(mock_spark, caplog):
+@patch("dbx_marker.manager.delta_table_exists", return_value=True)
+def test_initialize_table_that_exists(mock_table_exists, mock_spark, caplog):
     manager = DbxMarker(delta_table_path="mock_path", spark=mock_spark)
     assert manager.delta_table_path == "mock_path"
     assert mock_spark.sql.call_count == 0

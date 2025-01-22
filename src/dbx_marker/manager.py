@@ -4,6 +4,7 @@ from typing import Optional, Union
 from loguru import logger
 from pyspark.sql import SparkSession
 
+from dbx_marker.config import config
 from dbx_marker.exceptions import (
     MarkerDeleteError,
     MarkerNotFoundError,
@@ -23,7 +24,7 @@ class DbxMarker:
         self,
         delta_table_path: str,
         spark: Optional[SparkSession] = None,
-        datetime_format: str = "%Y-%m-%d %H:%M:%S",
+        datetime_format: str = config.DATETIME_FORMAT,
     ):
         """
         Initialize the manager with the path to the Delta table that stores markers.

@@ -41,18 +41,10 @@ jobs:
     - name: Run all checks
       run: pdm run all-checks
 
-    - name: Update version in pyproject.toml
-      if: github.ref == 'refs/heads/main'
+    - name: Tag the commit
       run: |
-        echo "Updating version to ${{ steps.gitversion.outputs.semVer }}"
-        sed -i "s/version = \".*\"/version = \"${{ steps.gitversion.outputs.semVer }}\"/" pyproject.toml
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git tag ${{ steps.gitversion.outputs.semVer }}
+        git push origin ${{ steps.gitversion.outputs.semVer }}
 
-    - name: Build package
-      if: github.ref == 'refs/heads/main'
-      run: pdm build
-
-#    - name: Publish package to PyPI
-#      if: github.ref == 'refs/heads/main'
-#      uses: pypa/gh-action-pypi-publish@release/v1
-#      with:
-#        password: ${{ secrets.PYPI_API_TOKEN }}

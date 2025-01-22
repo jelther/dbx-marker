@@ -4,7 +4,7 @@ from typing import Union
 from loguru import logger
 from pyspark.errors import AnalysisException
 
-from dbx_marker.exceptions import MarkerInvalidTypeError, MarkerParsingError
+from dbx_marker.exceptions import MarkerParsingError, MarkerInvalidTypeError
 
 
 def delta_table_exists(spark, path: str) -> bool:
@@ -40,6 +40,9 @@ def parse_marker_from_type(
     except MarkerParsingError as mpe:
         logger.error(mpe)
         raise mpe
+    except MarkerInvalidTypeError as mite:
+        logger.error(mite)
+        raise mite
     except Exception as e:
         logger.error(f"Failed to parse marker: {e}")
         raise MarkerParsingError(f"Failed to parse marker: {e}") from e

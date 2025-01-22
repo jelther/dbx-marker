@@ -83,4 +83,7 @@ def test_update_marker_exception(mock_delta_table_exists, mock_spark, caplog):
     mock_spark.sql.side_effect = Exception("Test exception")
     with pytest.raises(MarkerUpdateError):
         manager.update_marker("test_pipeline", 1, "int")
-    assert "Failed to update marker for pipeline 'test_pipeline': Test exception" in caplog.text
+    assert (
+        "Failed to update marker for pipeline 'test_pipeline': Test exception"
+        in caplog.text
+    )

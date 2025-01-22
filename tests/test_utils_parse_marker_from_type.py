@@ -8,6 +8,7 @@ from dbx_marker.config import config
 from dbx_marker.exceptions import MarkerInvalidTypeError
 from dbx_marker.utils import delta_table_exists, parse_marker_from_type
 
+
 @pytest.mark.parametrize(
     "marker, marker_type, expected",
     [
@@ -17,8 +18,9 @@ from dbx_marker.utils import delta_table_exists, parse_marker_from_type
     ],
 )
 def test_parse_marker_from_type_valid(marker, marker_type, expected):
-    assert parse_marker_from_type(marker, marker_type, config.DATETIME_FORMAT) == expected
-
+    assert (
+        parse_marker_from_type(marker, marker_type, config.DATETIME_FORMAT) == expected
+    )
 
 
 def test_parse_marker_from_type_invalid():

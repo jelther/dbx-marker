@@ -5,7 +5,7 @@ description = "Easily manage incremental progress using watermarks in your Datab
 authors = [
     {name = "Jelther Goncalves", email = "hello@jelther.dev"},
 ]
-dependencies = ["delta-spark>=3.3.0", "pyspark>=3.5.4", "loguru>=0.7.3"]
+dependencies = ["delta-spark>=3.3.0", "loguru>=0.7.3"]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT License"}
@@ -27,6 +27,7 @@ dev = [
     "mypy>=1.14.1",
     "isort>=5.13.2",
     "tox-pdm>=0.7.2",
+    "pyspark>=3.5.4",
 ]
 
 [tool.black]

@@ -21,7 +21,7 @@ from dbx_marker.utils import delta_table_exists
 class DbxMarker:
     def __init__(self, delta_table_path: str, spark: Optional[SparkSession] = None):
         """
-        Initialize the manager with the path to the Delta table that stores markers or checkpoints.
+        Initialize the manager with the path to the Delta table that stores markers.
 
         :param delta_table_path: Delta table location for tracking metadata.
         :param spark: Optional SparkSession instance, will create new one if not provided
@@ -34,7 +34,7 @@ class DbxMarker:
         """
         Ensure the Delta table for markers exists.
         """
-        logger.debug("Initializing Delta table for markers/checkpoints.")
+        logger.debug("Initializing Delta table for markers.")
         try:
 
             if not delta_table_exists(self.spark, self.delta_table_path):
@@ -50,7 +50,7 @@ class DbxMarker:
 
     def get_marker(self, pipeline_name: str) -> Optional[str]:
         """
-        Get the current marker or checkpoint value for a given pipeline.
+        Get the current marker value for a given pipeline.
 
         :param pipeline_name: Unique identifier for the pipeline.
         :return: The current marker value, or None if no marker is found.
@@ -80,7 +80,7 @@ class DbxMarker:
         Update or insert the marker for a pipeline.
 
         :param pipeline_name: Unique identifier for the pipeline.
-        :param value: New marker or checkpoint value.
+        :param value: New marker value.
         """
         now: datetime = datetime.now()
         sql_statement: str = UPDATE_MARKER_SQL.format(
